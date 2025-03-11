@@ -1,0 +1,7 @@
+.DS_Store
+*/CL
+*/OpenCL-Headers
+*/c_sdk_220203
+*.out
+*.o
+*.dSYM
