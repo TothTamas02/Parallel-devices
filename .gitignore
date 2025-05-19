@@ -6,3 +6,5 @@
 *.o
 *.dSYM
 .clangd
+build/
+images/output*.*
