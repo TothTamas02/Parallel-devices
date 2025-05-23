@@ -98,7 +98,7 @@ input2.jpeg,sobel,gpu,4032,3024,7.4530000000
 ### Fordítás
 
 ```bash
-make FOLDER=beadando
+make FOLDER=image_filter
 ```
 
 ### Licensz
