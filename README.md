@@ -22,8 +22,14 @@ Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes 
 ./image-filter \
 	--input input.jpg \
 	--output output.png \
-	--filter sobel|gauss|median \
+	--filter sobel|gauss|median|luma \
 	--device cpu|gpu
+```
+
+vagy ha az összesen filteren és képen szeretnéd futtatni akkor(gyökér mappában):
+
+```
+./run_all_filters.sh cpu|gpu
 ```
 
 ### Fájlstruktúra
@@ -40,9 +46,9 @@ Parallel-devices/
 │ └── stb_image_write.h # Kép mentéshez
 │
 ├── images/
-│ ├── input.jpg # Tesztbemenet
-│ └── output.png # Eredménykép
-│
+│ ├── input[number].jpeg # Tesztbemenet
+│ └── outputs/ # Eredményképek
+│   └── output[number]_[filter]_[device].png #Eredménykép
 ├── build/ # Fordított binárisok helye
 │ └── (ide kerül a `beadando/image_filter` vagy más feladat binárisa)
 │
@@ -52,6 +58,7 @@ Parallel-devices/
 │ └── ...
 │
 ├── Makefile # Általános makefile (moduláris)
+├── run_all_filters.sh
 ├── README.md # A beadandó dokumentációja
 └── measurements.csv # Mérési eredmények külön fájlban
 ```
@@ -86,6 +93,7 @@ input2.jpeg,sobel,gpu,4032,3024,7.4530000000
 - OpenCL SDK
 - C fordító (pl. gcc vagy clang)
 - stb_image.h és stb_image_write.h a `include/` könyvtárban
+- cpu-n való futtatás esetén windows rendszer
 
 ### Fordítás
 

@@ -6,7 +6,6 @@
 #include <time.h>
 #include <sys/time.h>
 
-#define KERNEL_FILE "image_filter/kernels.cl"
 #define MAX_SOURCE_SIZE (0x100000)
 
 void to_grayscale(const unsigned char *input, unsigned char *output, int width, int height, int channels) {
@@ -19,12 +18,17 @@ void to_grayscale(const unsigned char *input, unsigned char *output, int width, 
 }
 
 void run_filter(unsigned char *input, unsigned char *output, int width, int height, int channels, const char *filter, const char *device_type_str, const char *input_file) {
+    const char *KERNEL_FILE = "image_filter/kernels.cl";
     FILE *fp = fopen(KERNEL_FILE, "r");
-if (!fp) {
-    fprintf(stderr, "Failed to load kernel: %s\n", KERNEL_FILE);
-    perror("fopen");
-    exit(1);
-}
+    if (!fp) {
+        KERNEL_FILE = "../image_filter/kernels.cl";
+        fp = fopen(KERNEL_FILE, "r");
+    }
+    if (!fp) {
+        fprintf(stderr, "Failed to load kernel: %s\n", KERNEL_FILE);
+        perror("fopen");
+        exit(1);
+    }
 
     char *source_str = (char *)malloc(MAX_SOURCE_SIZE);
     size_t source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
@@ -103,20 +107,28 @@ if (!fp) {
     clReleaseContext(context);
     free(source_str);
 
-	FILE *log_check = fopen("measurements.csv", "r");
-		int file_exists = (log_check != NULL);
-		if (log_check) {
-			fclose(log_check);
-		}
+    FILE *log_check = fopen("measurements.csv", "r");
+    if (!log_check) {
+        log_check = fopen("../measurements.csv", "r");
+    }
+    int file_exists = (log_check != NULL);
+    if (log_check) {
+        fclose(log_check);
+    }
 
-	const char *filename_only = strrchr(input_file, '/');
-	if (filename_only) {
-    filename_only++;
-	} else {
-    filename_only = input_file;
-	}
+    const char *filename_only = strrchr(input_file, '/');
+    if (filename_only) {
+        filename_only++;
+    } else {
+        filename_only = input_file;
+    }
 
-  FILE *log = fopen("measurements.csv", "a");
+    const char *log_path = "measurements.csv";
+    FILE *log = fopen(log_path, "a");
+    if (!log) {
+        log_path = "../measurements.csv";
+        log = fopen(log_path, "a");
+    }
     if (log) {
         if (!file_exists) {
             fprintf(log, "input_file,filter,device,width,height,elapsed_time(ms)\n");
