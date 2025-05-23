@@ -6,7 +6,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-#define KERNEL_FILE "../image_filter/kernels.cl"
+#define KERNEL_FILE "image_filter/kernels.cl"
 #define MAX_SOURCE_SIZE (0x100000)
 
 void to_grayscale(const unsigned char *input, unsigned char *output, int width, int height, int channels) {
@@ -28,7 +28,6 @@ if (!fp) {
 
     char *source_str = (char *)malloc(MAX_SOURCE_SIZE);
     size_t source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
-		printf("Kernel loaded (%zu bytes): %.30s...\n", source_size, source_str);
     fclose(fp);
 
     cl_device_type device_type = !strcmp(device_type_str, "gpu") ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU;
@@ -104,7 +103,7 @@ if (!fp) {
     clReleaseContext(context);
     free(source_str);
 
-	FILE *log_check = fopen("../measurements.csv", "r");
+	FILE *log_check = fopen("measurements.csv", "r");
 		int file_exists = (log_check != NULL);
 		if (log_check) {
 			fclose(log_check);
@@ -117,7 +116,7 @@ if (!fp) {
     filename_only = input_file;
 	}
 
-  FILE *log = fopen("../measurements.csv", "a");
+  FILE *log = fopen("measurements.csv", "a");
     if (log) {
         if (!file_exists) {
             fprintf(log, "input_file,filter,device,width,height,elapsed_time(ms)\n");

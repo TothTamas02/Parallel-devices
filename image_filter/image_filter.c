@@ -9,7 +9,7 @@
 #include "../include/stb_image_write.h"
 
 void print_usage() {
-	printf("Usage: ./image_filter --input <input_file.jpg|png|...> --output <output_file.png> --filter sobel|gauss|median --device cpu|gpu\n");
+	printf("Usage: ./image_filter --input <input_file.jpg|png|...> --output <output_file.png> --filter sobel|gauss|median|luma --device cpu|gpu\n");
 }
 
 int main(int argc, char** argv) {

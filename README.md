@@ -12,6 +12,7 @@ Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes 
 - **Sobel szűrő**: autómatikusan átalakítja a képet szürkeárnyalatosra, majd éldetektálást végez
 - **Gauss szűrő**: zajcsökkentő elmosás szines képeken is
 - **Medián szűrő**: zajeltávolítás színes képeken is
+- **Luma szűrő**: zajeltávolítás csak a fény erősség figyelembevételével
 - **OpenCL GPU vagy CPU eszközválasztás**
 - **Autómatikus mentés PNG formátumba**
 
@@ -71,13 +72,13 @@ A következő táblázat néhány futtatás idejét mutatja különböző szűr�
 ### measurements.csv példa
 
 ```
-filename,width,height,filter,device,time_ms
-input1.jpg,1920,1080,sobel,gpu,8.4
-input1.jpg,1920,1080,gauss,gpu,6.7
-input1.jpg,1920,1080,median,gpu,12.3
-input1.jpg,1920,1080,sobel,cpu,24.1
-input1.jpg,1920,1080,gauss,cpu,18.5
-input1.jpg,1920,1080,median,cpu,36.9
+input_file,filter,device,width,height,elapsed_time(ms)
+input1.jpeg,sobel,gpu,1024,1024,2.8670000000
+input1.jpeg,gauss,gpu,1024,1024,3.0810000000
+input1.jpeg,median,gpu,1024,1024,24.8590000000
+input1.jpeg,luma,gpu,1024,1024,81.2860000000
+input2.jpeg,sobel,gpu,4032,3024,7.4530000000
+...
 ```
 
 ### Követelmények
