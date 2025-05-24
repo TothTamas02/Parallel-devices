@@ -36,16 +36,23 @@ void run_filter(unsigned char *input, unsigned char *output, int width, int heig
 
     cl_device_type device_type = !strcmp(device_type_str, "gpu") ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU;
 
-    cl_platform_id platform_id;
+		#define max_platforms 255
+    cl_platform_id platform_id[max_platforms];
     cl_device_id device_id;
+
     cl_context context;
     cl_command_queue queue;
     cl_program program;
     cl_kernel kernel;
     cl_mem input_buffer, output_buffer;
 
-    cl_int ret = clGetPlatformIDs(1, &platform_id, NULL);
-		ret = clGetDeviceIDs(platform_id, device_type, 1, &device_id, NULL);
+    cl_int ret = clGetPlatformIDs(max_platforms, platform_id, NULL);
+    int platform_count = ret;
+    for (int i = 0; i < platform_count; i++) {
+        ret = clGetDeviceIDs(platform_id[i], device_type, 1, &device_id, NULL);
+        if (ret >= 0)
+            break;
+    }
     context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &ret);
     queue = clCreateCommandQueue(context, device_id, 0, &ret);
 
