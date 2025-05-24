@@ -11,7 +11,7 @@ ifeq ($(UNAME_S),Darwin)
     LDFLAGS = -framework OpenCL
 else
     CFLAGS = -DCL_TARGET_OPENCL_VERSION=120
-    LDFLAGS = -lOpenCL
+    LDFLAGS = -lOpenCL -lm
 endif
 
 SRC_DIR = $(FOLDER)

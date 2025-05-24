@@ -1,21 +1,41 @@
-input_file,filter,device,width,height,elapsed_time(ms)
-input1.jpeg,sobel,gpu,1024,1024,4.8280000000
-input1.jpeg,gauss,gpu,1024,1024,3.3780000000
-input1.jpeg,median,gpu,1024,1024,17.8100000000
-input1.jpeg,luma,gpu,1024,1024,37.8670000000
-input2.jpeg,sobel,gpu,4032,3024,8.3520000000
-input2.jpeg,gauss,gpu,4032,3024,24.4880000000
-input2.jpeg,median,gpu,4032,3024,145.4160000000
-input2.jpeg,luma,gpu,4032,3024,353.7040000000
-input3.jpeg,sobel,gpu,1024,1024,2.1730000000
-input3.jpeg,gauss,gpu,1024,1024,2.7360000000
-input3.jpeg,median,gpu,1024,1024,18.0250000000
-input3.jpeg,luma,gpu,1024,1024,28.7040000000
-input4.jpeg,sobel,gpu,4032,3024,9.4470000000
-input4.jpeg,gauss,gpu,4032,3024,17.2800000000
-input4.jpeg,median,gpu,4032,3024,149.0700000000
-input4.jpeg,luma,gpu,4032,3024,340.0300000000
-input5.jpeg,sobel,gpu,5472,3648,11.7910000000
-input5.jpeg,gauss,gpu,5472,3648,31.2010000000
-input5.jpeg,median,gpu,5472,3648,233.3270000000
-input5.jpeg,luma,gpu,5472,3648,537.0980000000
+input_file,filter,device_name,width,height,elapsed_time(ms)
+input1.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,0.0000000000
+input1.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,1.0000000000
+input1.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,2.9960000000
+input1.jpeg,luma,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,3.0080000000
+input2.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,2.9670000000
+input2.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,12.0000000000
+input2.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,34.9980000000
+input2.jpeg,luma,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,31.9990000000
+input3.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,0.9590000000
+input3.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,1.9890000000
+input3.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,2.9990000000
+input3.jpeg,luma,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,4.0010000000
+input4.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,2.9970000000
+input4.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,10.0000000000
+input4.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,33.9980000000
+input4.jpeg,luma,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,30.9690000000
+input5.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,5472,3648,5.9970000000
+input5.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,5472,3648,14.9980000000
+input5.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,5472,3648,59.9990000000
+input5.jpeg,luma,NVIDIA GeForce RTX 3060 Laptop GPU,5472,3648,54.0000000000
+input1.jpeg,sobel,Intel(R) UHD Graphics,1024,1024,3.4330000000
+input1.jpeg,gauss,Intel(R) UHD Graphics,1024,1024,3.9980000000
+input1.jpeg,median,Intel(R) UHD Graphics,1024,1024,13.0340000000
+input1.jpeg,luma,Intel(R) UHD Graphics,1024,1024,30.0020000000
+input2.jpeg,sobel,Intel(R) UHD Graphics,4032,3024,8.0330000000
+input2.jpeg,gauss,Intel(R) UHD Graphics,4032,3024,27.0000000000
+input2.jpeg,median,Intel(R) UHD Graphics,4032,3024,127.0000000000
+input2.jpeg,luma,Intel(R) UHD Graphics,4032,3024,360.9980000000
+input3.jpeg,sobel,Intel(R) UHD Graphics,1024,1024,1.9640000000
+input3.jpeg,gauss,Intel(R) UHD Graphics,1024,1024,2.9990000000
+input3.jpeg,median,Intel(R) UHD Graphics,1024,1024,12.0080000000
+input3.jpeg,luma,Intel(R) UHD Graphics,1024,1024,30.0050000000
+input4.jpeg,sobel,Intel(R) UHD Graphics,4032,3024,9.0020000000
+input4.jpeg,gauss,Intel(R) UHD Graphics,4032,3024,26.0000000000
+input4.jpeg,median,Intel(R) UHD Graphics,4032,3024,127.0080000000
+input4.jpeg,luma,Intel(R) UHD Graphics,4032,3024,355.9980000000
+input5.jpeg,sobel,Intel(R) UHD Graphics,5472,3648,12.0000000000
+input5.jpeg,gauss,Intel(R) UHD Graphics,5472,3648,45.0420000000
+input5.jpeg,median,Intel(R) UHD Graphics,5472,3648,203.9960000000
+input5.jpeg,luma,Intel(R) UHD Graphics,5472,3648,584.0000000000

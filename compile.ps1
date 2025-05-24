@@ -1,0 +1,1 @@
+$FOLDER="image_filter"; $SRC=Get-ChildItem "$FOLDER\*.c" | ForEach-Object { $_.FullName }; $BIN=".\build\$FOLDER.exe"; gcc $SRC -o $BIN -DCL_TARGET_OPENCL_VERSION=120 -lOpenCL -lm

@@ -8,3 +8,4 @@
 .clangd
 build/
 images/output*
+.vscode/
