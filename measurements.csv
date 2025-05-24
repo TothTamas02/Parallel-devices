@@ -39,3 +39,23 @@ input5.jpeg,sobel,Intel(R) UHD Graphics,5472,3648,12.0000000000
 input5.jpeg,gauss,Intel(R) UHD Graphics,5472,3648,45.0420000000
 input5.jpeg,median,Intel(R) UHD Graphics,5472,3648,203.9960000000
 input5.jpeg,luma,Intel(R) UHD Graphics,5472,3648,584.0000000000
+input1.jpeg,sobel,Apple M3,1024,1024,3.5700000000
+input1.jpeg,gauss,Apple M3,1024,1024,2.5840000000
+input1.jpeg,median,Apple M3,1024,1024,18.3040000000
+input1.jpeg,luma,Apple M3,1024,1024,28.3710000000
+input2.jpeg,sobel,Apple M3,4032,3024,9.4150000000
+input2.jpeg,gauss,Apple M3,4032,3024,11.5830000000
+input2.jpeg,median,Apple M3,4032,3024,166.0310000000
+input2.jpeg,luma,Apple M3,4032,3024,334.4490000000
+input3.jpeg,sobel,Apple M3,1024,1024,2.8630000000
+input3.jpeg,gauss,Apple M3,1024,1024,3.4850000000
+input3.jpeg,median,Apple M3,1024,1024,21.7650000000
+input3.jpeg,luma,Apple M3,1024,1024,30.1010000000
+input4.jpeg,sobel,Apple M3,4032,3024,4.7200000000
+input4.jpeg,gauss,Apple M3,4032,3024,24.0120000000
+input4.jpeg,median,Apple M3,4032,3024,162.8190000000
+input4.jpeg,luma,Apple M3,4032,3024,330.3340000000
+input5.jpeg,sobel,Apple M3,5472,3648,10.3190000000
+input5.jpeg,gauss,Apple M3,5472,3648,26.0010000000
+input5.jpeg,median,Apple M3,5472,3648,253.6970000000
+input5.jpeg,luma,Apple M3,5472,3648,553.7830000000

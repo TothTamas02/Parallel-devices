@@ -4,7 +4,7 @@
 
 ### Projekt Leírása
 
-Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes különböző szűrések (Sobel, Gauss, Medián) színes vagy szürkeárnyalatos képeken. A szűrés típusa, a bemenet, a kimenet és az eszköz(CPU/GPU) parancssori kapcsolókon keresztül állítható be.
+Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes különböző szűrések (Sobel, Gauss, Medián) színes vagy szürkeárnyalatos képeken. A szűrés típusa, a bemenet, a kimenet és a platform(melyik gpu számmal) parancssori kapcsolókon keresztül állítható be.
 
 ### Fő Funkciók
 
@@ -13,7 +13,7 @@ Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes 
 - **Gauss szűrő**: zajcsökkentő elmosás szines képeken is
 - **Medián szűrő**: zajeltávolítás színes képeken is
 - **Luma szűrő**: zajeltávolítás csak a fény erősség figyelembevételével
-- **OpenCL GPU vagy CPU eszközválasztás**
+- **OpenCL GPU eszközválasztás**
 - **Autómatikus mentés PNG formátumba**
 
 ### Használat
@@ -23,13 +23,13 @@ Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes 
 	--input input.jpg \
 	--output output.png \
 	--filter sobel|gauss|median|luma \
-	--device cpu|gpu
+	--device [number]
 ```
 
 vagy ha az összesen filteren és képen szeretnéd futtatni akkor(gyökér mappában):
 
 ```
-./run_all_filters.sh cpu|gpu
+./run_all_filters.sh [number]
 ```
 
 ### Fájlstruktúra
@@ -65,26 +65,94 @@ Parallel-devices/
 
 ### Mérési Eredmények
 
-A következő táblázat néhány futtatás idejét mutatja különböző szűrőkkel és eszközökkel:
+![gráf a mérési eredményekről](graph.jpg)
 
-| Kép neve   | Méret (px) | Szűrő  | Eszköz | Futásidő (ms) |
-| ---------- | ---------- | ------ | ------ | ------------- |
-| input1.jpg | 1920x1080  | sobel  | gpu    | 8.4           |
-| input1.jpg | 1920x1080  | gauss  | gpu    | 6.7           |
-| input1.jpg | 1920x1080  | median | gpu    | 12.3          |
-| input1.jpg | 1920x1080  | sobel  | cpu    | 24.1          |
-| input1.jpg | 1920x1080  | gauss  | cpu    | 18.5          |
-| input1.jpg | 1920x1080  | median | cpu    | 36.9          |
+#### 	**Apple M3**
+
+| Fájlnév     | Szűrő   | Szélesség | Magasság | Futási idő (ms) |
+|-------------|---------|-----------|----------|-----------------|
+| input1.jpeg | sobel   | 1024      | 1024     | 3.570           |
+| input1.jpeg | gauss   | 1024      | 1024     | 2.584           |
+| input1.jpeg | median  | 1024      | 1024     | 18.304          |
+| input1.jpeg | luma    | 1024      | 1024     | 28.371          |
+| input2.jpeg | sobel   | 4032      | 3024     | 9.415           |
+| input2.jpeg | gauss   | 4032      | 3024     | 11.583          |
+| input2.jpeg | median  | 4032      | 3024     | 166.031         |
+| input2.jpeg | luma    | 4032      | 3024     | 334.449         |
+| input3.jpeg | sobel   | 1024      | 1024     | 2.863           |
+| input3.jpeg | gauss   | 1024      | 1024     | 3.485           |
+| input3.jpeg | median  | 1024      | 1024     | 21.765          |
+| input3.jpeg | luma    | 1024      | 1024     | 30.101          |
+| input4.jpeg | sobel   | 4032      | 3024     | 4.720           |
+| input4.jpeg | gauss   | 4032      | 3024     | 24.012          |
+| input4.jpeg | median  | 4032      | 3024     | 162.819         |
+| input4.jpeg | luma    | 4032      | 3024     | 330.334         |
+| input5.jpeg | sobel   | 5472      | 3648     | 10.319          |
+| input5.jpeg | gauss   | 5472      | 3648     | 26.001          |
+| input5.jpeg | median  | 5472      | 3648     | 253.697         |
+| input5.jpeg | luma    | 5472      | 3648     | 553.783         |
+
+#### **Intel(R) UHD Graphics**
+
+| Fájlnév     | Szűrő   | Szélesség | Magasság | Futási idő (ms) |
+|-------------|---------|-----------|----------|-----------------|
+| input1.jpeg | sobel   | 1024      | 1024     | 3.433           |
+| input1.jpeg | gauss   | 1024      | 1024     | 3.998           |
+| input1.jpeg | median  | 1024      | 1024     | 13.034          |
+| input1.jpeg | luma    | 1024      | 1024     | 30.002          |
+| input2.jpeg | sobel   | 4032      | 3024     | 8.033           |
+| input2.jpeg | gauss   | 4032      | 3024     | 27.000          |
+| input2.jpeg | median  | 4032      | 3024     | 127.000         |
+| input2.jpeg | luma    | 4032      | 3024     | 360.998         |
+| input3.jpeg | sobel   | 1024      | 1024     | 1.964           |
+| input3.jpeg | gauss   | 1024      | 1024     | 2.999           |
+| input3.jpeg | median  | 1024      | 1024     | 12.008          |
+| input3.jpeg | luma    | 1024      | 1024     | 30.005          |
+| input4.jpeg | sobel   | 4032      | 3024     | 9.002           |
+| input4.jpeg | gauss   | 4032      | 3024     | 26.000          |
+| input4.jpeg | median  | 4032      | 3024     | 127.008         |
+| input4.jpeg | luma    | 4032      | 3024     | 355.998         |
+| input5.jpeg | sobel   | 5472      | 3648     | 12.000          |
+| input5.jpeg | gauss   | 5472      | 3648     | 45.042          |
+| input5.jpeg | median  | 5472      | 3648     | 203.996         |
+| input5.jpeg | luma    | 5472      | 3648     | 584.000         |
+
+#### **NVIDIA GeForce RTX 3060 Laptop GPU**
+
+| Fájlnév     | Szűrő   | Szélesség | Magasság | Futási idő (ms) |
+|-------------|---------|-----------|----------|-----------------|
+| input1.jpeg | sobel   | 1024      | 1024     | 0.000           |
+| input1.jpeg | gauss   | 1024      | 1024     | 1.000           |
+| input1.jpeg | median  | 1024      | 1024     | 2.996           |
+| input1.jpeg | luma    | 1024      | 1024     | 3.008           |
+| input2.jpeg | sobel   | 4032      | 3024     | 2.967           |
+| input2.jpeg | gauss   | 4032      | 3024     | 12.000          |
+| input2.jpeg | median  | 4032      | 3024     | 34.998          |
+| input2.jpeg | luma    | 4032      | 3024     | 31.999          |
+| input3.jpeg | sobel   | 1024      | 1024     | 0.959           |
+| input3.jpeg | gauss   | 1024      | 1024     | 1.989           |
+| input3.jpeg | median  | 1024      | 1024     | 2.999           |
+| input3.jpeg | luma    | 1024      | 1024     | 4.001           |
+| input4.jpeg | sobel   | 4032      | 3024     | 2.997           |
+| input4.jpeg | gauss   | 4032      | 3024     | 10.000          |
+| input4.jpeg | median  | 4032      | 3024     | 33.998          |
+| input4.jpeg | luma    | 4032      | 3024     | 30.969          |
+| input5.jpeg | sobel   | 5472      | 3648     | 5.997           |
+| input5.jpeg | gauss   | 5472      | 3648     | 14.998          |
+| input5.jpeg | median  | 5472      | 3648     | 59.999          |
+| input5.jpeg | luma    | 5472      | 3648     | 54.000          |
 
 ### measurements.csv példa
 
 ```
-input_file,filter,device,width,height,elapsed_time(ms)
-input1.jpeg,sobel,gpu,1024,1024,2.8670000000
-input1.jpeg,gauss,gpu,1024,1024,3.0810000000
-input1.jpeg,median,gpu,1024,1024,24.8590000000
-input1.jpeg,luma,gpu,1024,1024,81.2860000000
-input2.jpeg,sobel,gpu,4032,3024,7.4530000000
+input_file,filter,device_name,width,height,elapsed_time(ms)
+input1.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,0.0000000000
+input1.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,1.0000000000
+input1.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,2.9960000000
+input1.jpeg,luma,NVIDIA GeForce RTX 3060 Laptop GPU,1024,1024,3.0080000000
+input2.jpeg,sobel,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,2.9670000000
+input2.jpeg,gauss,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,12.0000000000
+input2.jpeg,median,NVIDIA GeForce RTX 3060 Laptop GPU,4032,3024,34.9980000000
 ...
 ```
 
@@ -93,7 +161,6 @@ input2.jpeg,sobel,gpu,4032,3024,7.4530000000
 - OpenCL SDK
 - C fordító (pl. gcc vagy clang)
 - stb_image.h és stb_image_write.h a `include/` könyvtárban
-- cpu-n való futtatás esetén windows rendszer
 
 ### Fordítás
 
