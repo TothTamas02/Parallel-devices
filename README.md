@@ -15,6 +15,7 @@ Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes 
 - **Luma szűrő**: zajeltávolítás csak a fény erősség figyelembevételével
 - **OpenCL GPU eszközválasztás**
 - **Autómatikus mentés PNG formátumba**
+- **Szekvenciális futtatás CPU-n**
 
 ### Használat
 
@@ -29,15 +30,17 @@ Ez a projekt egy OpenCL-alapú képszűrő eszközt valósít meg, amely képes 
 vagy ha az összesen filteren és képen szeretnéd futtatni akkor(gyökér mappában):
 
 ```
-./run_all_filters.sh [number]
+./run_all_filters.sh [number, cpu esetén -2]
 ```
 
 ### Fájlstruktúra
+
 ```
 Parallel-devices/
 ├── beadando/ # A beadandó projekt (korábbi src/)
 │ ├── image_filter.c # Főprogram (host kód)
 │ ├── filters.c # OpenCL eszközök, kernel hívás
+│ ├── filters_cpu.c # Filterek szekvenciális futtatása CPU-n
 │ ├── filters.h # Header
 │ └── kernels.cl # OpenCL kernelkód
 │
@@ -52,13 +55,13 @@ Parallel-devices/
 ├── build/ # Fordított binárisok helye
 │ └── (ide kerül a `beadando/image_filter` vagy más feladat binárisa)
 │
-├── vector_add/ # Órai projekt
-├── rank/ # Órai projekt
-├── info/ # Órai projekt
-│ └── ...
+├── lesson_tasks/ # Órai projektek mappába rendezve
 │
 ├── Makefile # Általános makefile (moduláris)
 ├── run_all_filters.sh
+├── compile.ps1
+├── run_all_filters.ps1
+├── generate_graph.py # gráf generálás az adatokból
 ├── README.md # A beadandó dokumentációja
 └── measurements.csv # Mérési eredmények külön fájlban
 ```
@@ -67,80 +70,105 @@ Parallel-devices/
 
 ![gráf a mérési eredményekről](graph.jpg)
 
-#### 	**Apple M3**
+#### **Apple M3**
 
-| Fájlnév     | Szűrő   | Szélesség | Magasság | Futási idő (ms) |
-|-------------|---------|-----------|----------|-----------------|
-| input1.jpeg | sobel   | 1024      | 1024     | 3.570           |
-| input1.jpeg | gauss   | 1024      | 1024     | 2.584           |
-| input1.jpeg | median  | 1024      | 1024     | 18.304          |
-| input1.jpeg | luma    | 1024      | 1024     | 28.371          |
-| input2.jpeg | sobel   | 4032      | 3024     | 9.415           |
-| input2.jpeg | gauss   | 4032      | 3024     | 11.583          |
-| input2.jpeg | median  | 4032      | 3024     | 166.031         |
-| input2.jpeg | luma    | 4032      | 3024     | 334.449         |
-| input3.jpeg | sobel   | 1024      | 1024     | 2.863           |
-| input3.jpeg | gauss   | 1024      | 1024     | 3.485           |
-| input3.jpeg | median  | 1024      | 1024     | 21.765          |
-| input3.jpeg | luma    | 1024      | 1024     | 30.101          |
-| input4.jpeg | sobel   | 4032      | 3024     | 4.720           |
-| input4.jpeg | gauss   | 4032      | 3024     | 24.012          |
-| input4.jpeg | median  | 4032      | 3024     | 162.819         |
-| input4.jpeg | luma    | 4032      | 3024     | 330.334         |
-| input5.jpeg | sobel   | 5472      | 3648     | 10.319          |
-| input5.jpeg | gauss   | 5472      | 3648     | 26.001          |
-| input5.jpeg | median  | 5472      | 3648     | 253.697         |
-| input5.jpeg | luma    | 5472      | 3648     | 553.783         |
+| Fájlnév     | Szűrő  | Szélesség | Magasság | Futási idő (ms) |
+| ----------- | ------ | --------- | -------- | --------------- |
+| input1.jpeg | sobel  | 1024      | 1024     | 3.570           |
+| input1.jpeg | gauss  | 1024      | 1024     | 2.584           |
+| input1.jpeg | median | 1024      | 1024     | 18.304          |
+| input1.jpeg | luma   | 1024      | 1024     | 28.371          |
+| input2.jpeg | sobel  | 4032      | 3024     | 9.415           |
+| input2.jpeg | gauss  | 4032      | 3024     | 11.583          |
+| input2.jpeg | median | 4032      | 3024     | 166.031         |
+| input2.jpeg | luma   | 4032      | 3024     | 334.449         |
+| input3.jpeg | sobel  | 1024      | 1024     | 2.863           |
+| input3.jpeg | gauss  | 1024      | 1024     | 3.485           |
+| input3.jpeg | median | 1024      | 1024     | 21.765          |
+| input3.jpeg | luma   | 1024      | 1024     | 30.101          |
+| input4.jpeg | sobel  | 4032      | 3024     | 4.720           |
+| input4.jpeg | gauss  | 4032      | 3024     | 24.012          |
+| input4.jpeg | median | 4032      | 3024     | 162.819         |
+| input4.jpeg | luma   | 4032      | 3024     | 330.334         |
+| input5.jpeg | sobel  | 5472      | 3648     | 10.319          |
+| input5.jpeg | gauss  | 5472      | 3648     | 26.001          |
+| input5.jpeg | median | 5472      | 3648     | 253.697         |
+| input5.jpeg | luma   | 5472      | 3648     | 553.783         |
 
 #### **Intel(R) UHD Graphics**
 
-| Fájlnév     | Szűrő   | Szélesség | Magasság | Futási idő (ms) |
-|-------------|---------|-----------|----------|-----------------|
-| input1.jpeg | sobel   | 1024      | 1024     | 3.433           |
-| input1.jpeg | gauss   | 1024      | 1024     | 3.998           |
-| input1.jpeg | median  | 1024      | 1024     | 13.034          |
-| input1.jpeg | luma    | 1024      | 1024     | 30.002          |
-| input2.jpeg | sobel   | 4032      | 3024     | 8.033           |
-| input2.jpeg | gauss   | 4032      | 3024     | 27.000          |
-| input2.jpeg | median  | 4032      | 3024     | 127.000         |
-| input2.jpeg | luma    | 4032      | 3024     | 360.998         |
-| input3.jpeg | sobel   | 1024      | 1024     | 1.964           |
-| input3.jpeg | gauss   | 1024      | 1024     | 2.999           |
-| input3.jpeg | median  | 1024      | 1024     | 12.008          |
-| input3.jpeg | luma    | 1024      | 1024     | 30.005          |
-| input4.jpeg | sobel   | 4032      | 3024     | 9.002           |
-| input4.jpeg | gauss   | 4032      | 3024     | 26.000          |
-| input4.jpeg | median  | 4032      | 3024     | 127.008         |
-| input4.jpeg | luma    | 4032      | 3024     | 355.998         |
-| input5.jpeg | sobel   | 5472      | 3648     | 12.000          |
-| input5.jpeg | gauss   | 5472      | 3648     | 45.042          |
-| input5.jpeg | median  | 5472      | 3648     | 203.996         |
-| input5.jpeg | luma    | 5472      | 3648     | 584.000         |
+| Fájlnév     | Szűrő  | Szélesség | Magasság | Futási idő (ms) |
+| ----------- | ------ | --------- | -------- | --------------- |
+| input1.jpeg | sobel  | 1024      | 1024     | 3.433           |
+| input1.jpeg | gauss  | 1024      | 1024     | 3.998           |
+| input1.jpeg | median | 1024      | 1024     | 13.034          |
+| input1.jpeg | luma   | 1024      | 1024     | 30.002          |
+| input2.jpeg | sobel  | 4032      | 3024     | 8.033           |
+| input2.jpeg | gauss  | 4032      | 3024     | 27.000          |
+| input2.jpeg | median | 4032      | 3024     | 127.000         |
+| input2.jpeg | luma   | 4032      | 3024     | 360.998         |
+| input3.jpeg | sobel  | 1024      | 1024     | 1.964           |
+| input3.jpeg | gauss  | 1024      | 1024     | 2.999           |
+| input3.jpeg | median | 1024      | 1024     | 12.008          |
+| input3.jpeg | luma   | 1024      | 1024     | 30.005          |
+| input4.jpeg | sobel  | 4032      | 3024     | 9.002           |
+| input4.jpeg | gauss  | 4032      | 3024     | 26.000          |
+| input4.jpeg | median | 4032      | 3024     | 127.008         |
+| input4.jpeg | luma   | 4032      | 3024     | 355.998         |
+| input5.jpeg | sobel  | 5472      | 3648     | 12.000          |
+| input5.jpeg | gauss  | 5472      | 3648     | 45.042          |
+| input5.jpeg | median | 5472      | 3648     | 203.996         |
+| input5.jpeg | luma   | 5472      | 3648     | 584.000         |
 
 #### **NVIDIA GeForce RTX 3060 Laptop GPU**
 
-| Fájlnév     | Szűrő   | Szélesség | Magasság | Futási idő (ms) |
-|-------------|---------|-----------|----------|-----------------|
-| input1.jpeg | sobel   | 1024      | 1024     | 0.000           |
-| input1.jpeg | gauss   | 1024      | 1024     | 1.000           |
-| input1.jpeg | median  | 1024      | 1024     | 2.996           |
-| input1.jpeg | luma    | 1024      | 1024     | 3.008           |
-| input2.jpeg | sobel   | 4032      | 3024     | 2.967           |
-| input2.jpeg | gauss   | 4032      | 3024     | 12.000          |
-| input2.jpeg | median  | 4032      | 3024     | 34.998          |
-| input2.jpeg | luma    | 4032      | 3024     | 31.999          |
-| input3.jpeg | sobel   | 1024      | 1024     | 0.959           |
-| input3.jpeg | gauss   | 1024      | 1024     | 1.989           |
-| input3.jpeg | median  | 1024      | 1024     | 2.999           |
-| input3.jpeg | luma    | 1024      | 1024     | 4.001           |
-| input4.jpeg | sobel   | 4032      | 3024     | 2.997           |
-| input4.jpeg | gauss   | 4032      | 3024     | 10.000          |
-| input4.jpeg | median  | 4032      | 3024     | 33.998          |
-| input4.jpeg | luma    | 4032      | 3024     | 30.969          |
-| input5.jpeg | sobel   | 5472      | 3648     | 5.997           |
-| input5.jpeg | gauss   | 5472      | 3648     | 14.998          |
-| input5.jpeg | median  | 5472      | 3648     | 59.999          |
-| input5.jpeg | luma    | 5472      | 3648     | 54.000          |
+| Fájlnév     | Szűrő  | Szélesség | Magasság | Futási idő (ms) |
+| ----------- | ------ | --------- | -------- | --------------- |
+| input1.jpeg | sobel  | 1024      | 1024     | 0.000           |
+| input1.jpeg | gauss  | 1024      | 1024     | 1.000           |
+| input1.jpeg | median | 1024      | 1024     | 2.996           |
+| input1.jpeg | luma   | 1024      | 1024     | 3.008           |
+| input2.jpeg | sobel  | 4032      | 3024     | 2.967           |
+| input2.jpeg | gauss  | 4032      | 3024     | 12.000          |
+| input2.jpeg | median | 4032      | 3024     | 34.998          |
+| input2.jpeg | luma   | 4032      | 3024     | 31.999          |
+| input3.jpeg | sobel  | 1024      | 1024     | 0.959           |
+| input3.jpeg | gauss  | 1024      | 1024     | 1.989           |
+| input3.jpeg | median | 1024      | 1024     | 2.999           |
+| input3.jpeg | luma   | 1024      | 1024     | 4.001           |
+| input4.jpeg | sobel  | 4032      | 3024     | 2.997           |
+| input4.jpeg | gauss  | 4032      | 3024     | 10.000          |
+| input4.jpeg | median | 4032      | 3024     | 33.998          |
+| input4.jpeg | luma   | 4032      | 3024     | 30.969          |
+| input5.jpeg | sobel  | 5472      | 3648     | 5.997           |
+| input5.jpeg | gauss  | 5472      | 3648     | 14.998          |
+| input5.jpeg | median | 5472      | 3648     | 59.999          |
+| input5.jpeg | luma   | 5472      | 3648     | 54.000          |
+
+#### **Apple M3 (sequential)**
+
+| Fájlnév     | Szűrő  | Szélesség | Magasság | Futási idő (ms) |
+| ----------- | ------ | --------- | -------- | --------------- |
+| input1.jpeg | sobel  | 1024      | 1024     | 31.26           |
+| input1.jpeg | gauss  | 1024      | 1024     | 73.35           |
+| input1.jpeg | median | 1024      | 1024     | 1270.73         |
+| input1.jpeg | luma   | 1024      | 1024     | 920.89          |
+| input2.jpeg | sobel  | 4032      | 3024     | 306.39          |
+| input2.jpeg | gauss  | 4032      | 3024     | 860.04          |
+| input2.jpeg | median | 4032      | 3024     | 20964.81        |
+| input2.jpeg | luma   | 4032      | 3024     | 18060.18        |
+| input3.jpeg | sobel  | 1024      | 1024     | 25.05           |
+| input3.jpeg | gauss  | 1024      | 1024     | 73.51           |
+| input3.jpeg | median | 1024      | 1024     | 1163.78         |
+| input3.jpeg | luma   | 1024      | 1024     | 894.09          |
+| input4.jpeg | sobel  | 4032      | 3024     | 285.73          |
+| input4.jpeg | gauss  | 4032      | 3024     | 902.41          |
+| input4.jpeg | median | 4032      | 3024     | 22412.43        |
+| input4.jpeg | luma   | 4032      | 3024     | 18278.66        |
+| input5.jpeg | sobel  | 5472      | 3648     | 484.22          |
+| input5.jpeg | gauss  | 5472      | 3648     | 1419.17         |
+| input5.jpeg | median | 5472      | 3648     | 40503.67        |
+| input5.jpeg | luma   | 5472      | 3648     | 31771.53        |
 
 ### measurements.csv példa
 

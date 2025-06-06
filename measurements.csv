@@ -59,3 +59,23 @@ input5.jpeg,sobel,Apple M3,5472,3648,10.3190000000
 input5.jpeg,gauss,Apple M3,5472,3648,26.0010000000
 input5.jpeg,median,Apple M3,5472,3648,253.6970000000
 input5.jpeg,luma,Apple M3,5472,3648,553.7830000000
+input1.jpeg,sobel,Apple M3 (sequential),1024,1024,31.26
+input1.jpeg,gauss,Apple M3 (sequential),1024,1024,73.35
+input1.jpeg,median,Apple M3 (sequential),1024,1024,1270.73
+input1.jpeg,luma,Apple M3 (sequential),1024,1024,920.89
+input2.jpeg,sobel,Apple M3 (sequential),4032,3024,306.39
+input2.jpeg,gauss,Apple M3 (sequential),4032,3024,860.04
+input2.jpeg,median,Apple M3 (sequential),4032,3024,20964.81
+input2.jpeg,luma,Apple M3 (sequential),4032,3024,18060.18
+input3.jpeg,sobel,Apple M3 (sequential),1024,1024,25.05
+input3.jpeg,gauss,Apple M3 (sequential),1024,1024,73.51
+input3.jpeg,median,Apple M3 (sequential),1024,1024,1163.78
+input3.jpeg,luma,Apple M3 (sequential),1024,1024,894.09
+input4.jpeg,sobel,Apple M3 (sequential),4032,3024,285.73
+input4.jpeg,gauss,Apple M3 (sequential),4032,3024,902.41
+input4.jpeg,median,Apple M3 (sequential),4032,3024,22412.43
+input4.jpeg,luma,Apple M3 (sequential),4032,3024,18278.66
+input5.jpeg,sobel,Apple M3 (sequential),5472,3648,484.22
+input5.jpeg,gauss,Apple M3 (sequential),5472,3648,1419.17
+input5.jpeg,median,Apple M3 (sequential),5472,3648,40503.67
+input5.jpeg,luma,Apple M3 (sequential),5472,3648,31771.53

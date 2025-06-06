@@ -64,7 +64,38 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	run_filter(input_image, output_image, width, height, channels, filter, platform_id, argv[2]);
+	if (platform_id == -2)
+	{
+		// CPU-only mode
+		if (strcmp(filter, "sobel") == 0 && channels == 3)
+		{
+			unsigned char *gray_image = (unsigned char *)malloc(width * height);
+			if (!gray_image)
+			{
+				fprintf(stderr, "Error allocating memory for grayscale image\n");
+				stbi_image_free(input_image);
+				free(output_image);
+				return 1;
+			}
+			for (int i = 0; i < width * height; i++)
+			{
+				int r = input_image[i * 3];
+				int g = input_image[i * 3 + 1];
+				int b = input_image[i * 3 + 2];
+				gray_image[i] = (unsigned char)(0.299 * r + 0.587 * g + 0.114 * b);
+			}
+			run_filter_cpu(filter, gray_image, output_image, width, height, 1, input_file);
+			free(gray_image);
+		}
+		else
+		{
+			run_filter_cpu(filter, input_image, output_image, width, height, channels, input_file);
+		}
+	}
+	else
+	{
+		run_filter(input_image, output_image, width, height, channels, filter, platform_id, input_file);
+	}
 
 	if (!stbi_write_png(output_file, width, height, 3, output_image, width * 3))
 	{
